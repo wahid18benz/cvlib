@@ -1,7 +1,7 @@
 import cv2
 import os
 import numpy as np
-from .utils import download_file
+from utils import download_file
 
 initialize = True
 net = None
