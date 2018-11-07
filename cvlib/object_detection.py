@@ -11,9 +11,9 @@ COLORS = np.random.uniform(0, 255, size=(80, 3))
 
 def populate_class_labels():
 
-    class_file_name = 'yolov3_classes.txt'
+    class_file_name = '9k.names'
     class_file_abs_path = dest_dir + os.path.sep + class_file_name
-    url = 'https://github.com/arunponnusamy/object-detection-opencv/raw/master/yolov3.txt'
+    url = 'https://raw.githubusercontent.com/pjreddie/darknet/1e729804f61c8627eb257fba8b83f74e04945db7/data/9k.names'
     if not os.path.exists(class_file_abs_path):
         download_file(url=url, file_name=class_file_name, dest_dir=dest_dir)
     f = open(class_file_abs_path, 'r')
@@ -63,21 +63,27 @@ def detect_common_objects(image):
     global classes
     global dest_dir
 
-    config_file_name = 'yolov3.cfg'
+    config_file_name = 'yolo9000.cfg'
     config_file_abs_path = dest_dir + os.path.sep + config_file_name
 
-    weights_file_name = 'yolov3.weights'
+    weights_file_name = 'yolo9000.weights'
     weights_file_abs_path = dest_dir + os.path.sep + weights_file_name    
     
-    url = 'https://github.com/arunponnusamy/object-detection-opencv/raw/master/yolov3.cfg'
+    weights_file_name_partials = ['xaa','xab']
+    url = 'https://raw.githubusercontent.com/pjreddie/darknet/1e729804f61c8627eb257fba8b83f74e04945db7/cfg/yolo9000.cfg'
 
     if not os.path.exists(config_file_abs_path):
         download_file(url=url, file_name=config_file_name, dest_dir=dest_dir)
 
-    url = 'https://pjreddie.com/media/files/yolov3.weights'
-
+    url_1 = 'https://github.com/philipperemy/yolo-9000/blob/master/yolo9000-weights/xaa?raw=true'
+    url_2 = 'https://github.com/philipperemy/yolo-9000/blob/master/yolo9000-weights/xab?raw=true'
+    
     if not os.path.exists(weights_file_abs_path):
-        download_file(url=url, file_name=weights_file_name, dest_dir=dest_dir)    
+        download_file(url=url_1, file_name=weights_file_name, dest_dir=dest_dir)
+        download_file(url=url_2, file_name=weights_file_name, dest_dir=dest_dir)
+        with open("yolo9000.weights", "ab") as myfile, open(weights_file_name_partials[0], "rb") as file2, open(weights_file_name_partials[1], "rb") as file3:
+            myfile.write(file2.read())
+            myfile.write(file2.read())
 
     global initialize
     global net
